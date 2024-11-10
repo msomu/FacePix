@@ -1,9 +1,5 @@
 package com.msomu.facepix
 
-import android.app.Application
-import android.provider.MediaStore
-import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.msomu.facepix.ui.HomePageUiState

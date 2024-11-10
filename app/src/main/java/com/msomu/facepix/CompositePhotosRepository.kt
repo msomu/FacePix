@@ -4,11 +4,9 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.provider.MediaStore
-import com.msomu.facepix.model.DummyImageResource
 import com.msomu.facepix.model.Face
 import com.msomu.facepix.model.ImageResource
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -17,6 +15,8 @@ import javax.inject.Inject
 class CompositePhotosRepository @Inject constructor(
     private val applicationContext: Application
 ) : PhotosRepository {
+
+    private val faceDetectorHelper = FaceDetectorHelper(context = applicationContext)
 
     override fun getAllPhotosFromStorage(): Flow<List<ImageResource>> = flow {
         val processedImages = mutableListOf<ImageResource>()
@@ -48,8 +48,10 @@ class CompositePhotosRepository @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     private fun runDetectionOnImage(bitmap: Bitmap): List<Face> {
-        val faceDetectorHelper = FaceDetectorHelper(context = applicationContext)
         val face = mutableListOf<Face>()
+        if (faceDetectorHelper.isClosed()) {
+            faceDetectorHelper.setupFaceDetector()
+        }
         faceDetectorHelper.detectImage(bitmap)?.let { resultBundle ->
             resultBundle.results.forEach {
                 for (detection in it.detections()) {
@@ -63,6 +65,7 @@ class CompositePhotosRepository @Inject constructor(
                 }
             }
         }
+        faceDetectorHelper.clearFaceDetector()
         return face
     }
 }
