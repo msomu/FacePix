@@ -37,6 +37,6 @@ internal fun DetailPage(
         modifier = Modifier,
         onNavigateBack = {},
         onPersonSelected = viewModel::onPersonSelected,
-        onPersonCreated = viewModel::addPerson
+        onPersonCreated = viewModel::addPerson,
     )
 }
