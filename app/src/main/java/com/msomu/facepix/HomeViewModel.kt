@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,8 +25,10 @@ class HomeViewModel @Inject constructor(
         photosRepository.getAllPhotosFromStorage()
             .map { images ->
                 if (images.isEmpty()) {
+                    Timber.tag("msomu").d("HomeViewModel:: isEmpty")
                     HomePageUiState.Loading
                 } else {
+                    Timber.tag("msomu").d("HomeViewModel:: is not empty and success")
                     HomePageUiState.Success(images = images)
                 }
             }
@@ -35,9 +38,9 @@ class HomeViewModel @Inject constructor(
                 initialValue = HomePageUiState.Loading,
             )
 
-    private fun syncImages() {
+    fun syncImages() {
         viewModelScope.launch {
-            photosRepository.syncImagesWithStorage().collect { }
+            photosRepository.syncImagesWithStorage()
         }
     }
 }

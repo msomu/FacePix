@@ -3,6 +3,7 @@ package com.msomu.facepix
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.nfc.Tag
 import android.provider.MediaStore
 import com.msomu.facepix.database.dao.ProcessedImageDao
 import com.msomu.facepix.database.model.ProcessedImageEntity
@@ -10,9 +11,12 @@ import com.msomu.facepix.model.Face
 import com.msomu.facepix.model.ImageResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.invoke
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -26,6 +30,8 @@ class CompositePhotosRepository @Inject constructor(
     override fun getAllPhotosFromStorage(): Flow<List<ImageResource>> =
         processedImageDao.getAllImages()
             .map { entities ->
+                Timber.tag("msomu")
+                    .d("CompositePhotosRepository:getAllPhotosFromStorage: isEmpty(): ${entities.isEmpty()}")
                 entities.map { entity ->
                     ImageResource(
                         imagePath = entity.imagePath,
@@ -36,8 +42,9 @@ class CompositePhotosRepository @Inject constructor(
                 }
             }
 
-    fun syncImagesWithStorage() = flow {
-        val currentImages = mutableMapOf<String, Long>() // path to lastModified
+    suspend fun syncImagesWithStorage() = (Dispatchers.IO) {
+        Timber.tag("msomu").d("CompositePhotosRepository:syncImagesWithStorage")
+        val currentImages = mutableMapOf<String, Long>()
         val projection = arrayOf(
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media.DATE_MODIFIED
@@ -79,8 +86,9 @@ class CompositePhotosRepository @Inject constructor(
                                 lastModified = lastModified,
                                 detectedFaces = faces
                             )
+                            Timber.tag("msomu")
+                                .d("CompositePhotosRepository:syncImagesWithStorage: insert entity: $entity")
                             processedImageDao.insertImage(entity)
-                            emit(Unit) // Emit to trigger recomposition
                         }
                     } finally {
                         it.recycle()
@@ -90,17 +98,17 @@ class CompositePhotosRepository @Inject constructor(
         }
 
         // Remove deleted images from database
-        processedImageDao.getAllImages()
+        val dbPaths = processedImageDao.getAllImages()
             .map { it.map { entity -> entity.imagePath } }
-            .collect { dbPaths ->
-                dbPaths.forEach { path ->
-                    if (!currentImages.containsKey(path) || !File(path).exists()) {
-                        processedImageDao.deleteImage(path)
-                        emit(Unit)
-                    }
-                }
+            .first()
+        dbPaths.forEach { path ->
+            if (!currentImages.containsKey(path) || !File(path).exists()) {
+                Timber.tag("msomu")
+                    .d("CompositePhotosRepository:syncImagesWithStorage: delete entity: $path")
+                processedImageDao.deleteImage(path)
             }
-    }.flowOn(Dispatchers.IO)
+        }
+    }
 
     private fun runDetectionOnImage(bitmap: Bitmap): List<Face> {
         val face = mutableListOf<Face>()

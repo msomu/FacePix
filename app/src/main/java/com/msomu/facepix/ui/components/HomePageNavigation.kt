@@ -33,6 +33,7 @@ internal fun HomePage(
     val homePageUiState by viewModel.imageState.collectAsStateWithLifecycle()
     HomePage(
         homePageUiState = homePageUiState,
+        refresh = viewModel::syncImages,
         onImageClicked = onImageClicked,
         modifier = Modifier
             .fillMaxSize()
