@@ -7,6 +7,7 @@ import androidx.navigation.toRoute
 import com.msomu.facepix.database.dao.PersonDao
 import com.msomu.facepix.database.dao.ProcessedImageDao
 import com.msomu.facepix.database.model.PersonEntity
+import com.msomu.facepix.model.Face
 import com.msomu.facepix.ui.components.DetailsRoute
 import com.msomu.facepix.ui.components.ImageDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,6 +49,12 @@ class DetailViewModel @Inject constructor(
                     image = image,
                 )
             }
+        }
+    }
+
+    fun onPersonSelected(face: Face, personId: Long) {
+        viewModelScope.launch {
+
         }
     }
 

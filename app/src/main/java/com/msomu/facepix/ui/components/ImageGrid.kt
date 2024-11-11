@@ -62,7 +62,7 @@ fun ImageGrid(
                     contentScale = ContentScale.Crop
                 )
                 AnimatedVisibility(showOverlay) {
-                    FaceDetectionOverlay(
+                    ImageGridFaceDetectionOverlay(
                         results = imageResource.faces,
                         imageWidth = imageResource.width,
                         imageHeight = imageResource.height,

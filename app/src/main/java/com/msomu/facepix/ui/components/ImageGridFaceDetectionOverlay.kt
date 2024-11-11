@@ -12,19 +12,18 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import com.msomu.facepix.model.Face
 
 @Composable
-fun FaceDetectionOverlay(
+fun ImageGridFaceDetectionOverlay(
     results: List<Face>,
     imageWidth: Int,
     imageHeight: Int,
-    modifier: Modifier = Modifier,
-    onFaceClicked : (Face) -> Unit
+    modifier: Modifier = Modifier
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
 
     Canvas(modifier = modifier
         .fillMaxSize()
         .clipToBounds()) {
-        val (scale, offsetX, offsetY) = calculateFitScaleAndOffset(
+        val (scale, offsetX, offsetY) = calculateCropScaleAndOffset(
             imageWidth = imageWidth.toFloat(),
             imageHeight = imageHeight.toFloat(),
             containerWidth = size.width,
@@ -51,17 +50,21 @@ fun FaceDetectionOverlay(
     }
 }
 
-private fun calculateFitScaleAndOffset(
+private fun calculateCropScaleAndOffset(
     imageWidth: Float,
     imageHeight: Float,
     containerWidth: Float,
     containerHeight: Float
 ): Triple<Float, Float, Float> {
-    // Calculate the scaling factor to fit within the container
-    val scaleX = containerWidth / imageWidth
-    val scaleY = containerHeight / imageHeight
-    // Use the smaller scaling factor to ensure the image fits entirely
-    val scale = minOf(scaleX, scaleY)
+    // Calculate the scaling factor to fill the container
+    val containerAspect = containerWidth / containerHeight
+    val imageAspect = imageWidth / imageHeight
+
+    val scale = if (containerAspect > imageAspect) {
+        containerWidth / imageWidth
+    } else {
+        containerHeight / imageHeight
+    }
 
     // Calculate centered position
     val scaledWidth = imageWidth * scale
