@@ -1,14 +1,18 @@
 package com.msomu.facepix.ui.components
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.pointerInput
 import com.msomu.facepix.model.Face
 
 @Composable
@@ -21,15 +25,33 @@ fun FaceDetectionOverlay(
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
 
+    val scaledBoxes = remember(results, imageWidth, imageHeight) {
+        mutableListOf<Pair<Rect, Face>>()
+    }
+
     Canvas(modifier = modifier
         .fillMaxSize()
-        .clipToBounds()) {
+        .clipToBounds()
+        .pointerInput(results) {
+            detectTapGestures { offset ->
+                // Find the face whose bounding box contains the tap position
+                val clickedFace = scaledBoxes.firstOrNull { (rect, _) ->
+                    rect.contains(offset)
+                }?.second
+
+                clickedFace?.let { face ->
+                    onFaceClicked(face)
+                }
+            }
+        }) {
         val (scale, offsetX, offsetY) = calculateFitScaleAndOffset(
             imageWidth = imageWidth.toFloat(),
             imageHeight = imageHeight.toFloat(),
             containerWidth = size.width,
             containerHeight = size.height
         )
+
+        scaledBoxes.clear()
 
         results.forEach { detection ->
             val boundingBox = detection.boundingBox
@@ -39,6 +61,15 @@ fun FaceDetectionOverlay(
             val top = (boundingBox.top * scale) + offsetY
             val right = (boundingBox.right * scale) + offsetX
             val bottom = (boundingBox.bottom * scale) + offsetY
+
+            scaledBoxes.add(
+                Rect(
+                    left,
+                    top,
+                    right,
+                    bottom
+                ) to detection
+            )
 
             // Draw bounding box
             drawRect(

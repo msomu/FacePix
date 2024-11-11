@@ -23,7 +23,7 @@ import com.msomu.facepix.database.dao.PersonDao
 import com.msomu.facepix.database.dao.ProcessedImageDao
 import com.msomu.facepix.database.model.PersonEntity
 import com.msomu.facepix.database.model.ProcessedImageEntity
-import com.msomu.facepix.database.util.Converters
+import com.msomu.facepix.database.util.FaceTypeConverter
 
 @Database(
     entities = [
@@ -35,7 +35,7 @@ import com.msomu.facepix.database.util.Converters
     exportSchema = true,
 )
 @TypeConverters(
-    Converters::class,
+    FaceTypeConverter::class,
 )
 internal abstract class AppDatabase : RoomDatabase() {
     abstract fun processedImageDao(): ProcessedImageDao

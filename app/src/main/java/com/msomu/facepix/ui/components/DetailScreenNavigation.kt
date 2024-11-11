@@ -37,7 +37,7 @@ internal fun DetailPage(
         availablePersons = availablePersons,
         modifier = Modifier,
         onNavigateBack = {},
-        onPersonSelected = {face, long -> Timber.d("Person selected: $long")},
+        onPersonSelected = viewModel::onPersonSelected,
         onPersonCreated = viewModel::addPerson
     )
 }

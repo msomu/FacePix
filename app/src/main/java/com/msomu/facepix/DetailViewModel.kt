@@ -24,6 +24,7 @@ class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val processedImageDao: ProcessedImageDao,
     private val personDao: PersonDao,
+    private val imageRepository: ImageRepository
 ) : ViewModel() {
     private val route = savedStateHandle.toRoute<DetailsRoute>()
 
@@ -31,6 +32,8 @@ class DetailViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<ImageDetailUiState>(ImageDetailUiState.Loading)
     val uiState: StateFlow<ImageDetailUiState> = _uiState.asStateFlow()
+
+    private var currentFaces : List<Face> = emptyList()
 
     val availablePersons = personDao.getAllPersons()
         .stateIn(
@@ -45,6 +48,7 @@ class DetailViewModel @Inject constructor(
             _uiState.value = if (image == null) {
                 ImageDetailUiState.Error("Image not found")
             } else {
+                currentFaces = image.detectedFaces
                 ImageDetailUiState.Success(
                     image = image,
                 )
@@ -54,7 +58,20 @@ class DetailViewModel @Inject constructor(
 
     fun onPersonSelected(face: Face, personId: Long) {
         viewModelScope.launch {
+            imagePath.let { path ->
+                // Find the index of the face in the current image
+                imageRepository.updateFacePersonId(path, getFaceIndex(face), personId)
+            }
+        }
+    }
 
+    private fun getFaceIndex(face: Face): Int {
+        // This method would need to be implemented based on how you want to identify
+        // the specific face in the list. You could compare bounding boxes, confidence, etc.
+        // For example:
+        return currentFaces.indexOfFirst {
+            it.boundingBox == face.boundingBox &&
+                    it.confidence == face.confidence
         }
     }
 

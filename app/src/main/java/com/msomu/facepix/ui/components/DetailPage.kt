@@ -1,5 +1,6 @@
 package com.msomu.facepix.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -71,7 +72,7 @@ fun ImageDetailScreen(
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.Fit
                         )
-                        androidx.compose.animation.AnimatedVisibility(showOverlay) {
+                        this@Column.AnimatedVisibility(showOverlay) {
                             FaceDetectionOverlay(
                                 results = state.image.detectedFaces,
                                 imageWidth = state.image.width,

@@ -19,6 +19,7 @@ accompanist = "0.36.0"
 coil = "2.7.0"
 download = "5.4.0"
 androidxNavigation = "2.8.0"
+gson = "2.10.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +49,7 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
+google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 
 
