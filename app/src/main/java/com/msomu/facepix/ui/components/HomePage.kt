@@ -8,8 +8,12 @@ import android.os.Build.VERSION_CODES
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -20,6 +24,7 @@ import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.msomu.facepix.ui.HomePageUiState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomePage(
     homePageUiState: HomePageUiState,
@@ -27,39 +32,46 @@ fun HomePage(
     onImageClicked: (imagePath: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
-    Column(modifier = modifier) {
-        when (homePageUiState) {
-            is HomePageUiState.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("FacePix") },
+            )
+        }
+    ) { padding ->
+        Column(modifier = modifier.padding(padding)) {
+            when (homePageUiState) {
+                is HomePageUiState.Loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
-            }
 
-            is HomePageUiState.Success -> {
-                val images = homePageUiState.images
-                ImageGrid(Modifier.fillMaxSize(),
-                    images = images,
-                    onImageClick = { imageResource -> onImageClicked(imageResource.imagePath) })
-            }
+                is HomePageUiState.Success -> {
+                    val images = homePageUiState.images
+                    ImageGrid(Modifier.fillMaxSize(),
+                        images = images,
+                        onImageClick = { imageResource -> onImageClicked(imageResource.imagePath) })
+                }
 
-            is HomePageUiState.Error -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-                ) {
-                    Text(homePageUiState.message)
+                is HomePageUiState.Error -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                    ) {
+                        Text(homePageUiState.message)
+                    }
                 }
             }
         }
+        GalleryPermissionEffect(refresh)
     }
-    GalleryPermissionEffect(refresh)
 }
 
 @Composable
 @OptIn(ExperimentalPermissionsApi::class)
-private fun GalleryPermissionEffect(refresh : () -> Unit) {
+private fun GalleryPermissionEffect(refresh: () -> Unit) {
     // Permission requests should only be made from an Activity Context, which is not present
     // in previews
     if (LocalInspectionMode.current) return
