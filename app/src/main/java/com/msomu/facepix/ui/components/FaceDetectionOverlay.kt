@@ -5,11 +5,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.Stroke
 import com.msomu.facepix.model.Face
-import kotlin.math.max
 
 @Composable
 fun FaceDetectionOverlay(
@@ -20,8 +20,10 @@ fun FaceDetectionOverlay(
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
 
-    Canvas(modifier = modifier.fillMaxSize()) {
-        val (scale, offsetX, offsetY) = calculateCenterCropScaleAndOffset(
+    Canvas(modifier = modifier
+        .fillMaxSize()
+        .clipToBounds()) {
+        val (scale, offsetX, offsetY) = calculateCropScaleAndOffset(
             imageWidth = imageWidth.toFloat(),
             imageHeight = imageHeight.toFloat(),
             containerWidth = size.width,
@@ -48,22 +50,27 @@ fun FaceDetectionOverlay(
     }
 }
 
-private fun calculateCenterCropScaleAndOffset(
+private fun calculateCropScaleAndOffset(
     imageWidth: Float,
     imageHeight: Float,
     containerWidth: Float,
     containerHeight: Float
 ): Triple<Float, Float, Float> {
-    // Calculate scale to fill container while maintaining aspect ratio
-    val scaleX = containerWidth.toFloat() / imageWidth.toFloat()
-    val scaleY = containerHeight.toFloat() / imageHeight.toFloat()
-    val scale = max(scaleX, scaleY)
+    // Calculate the scaling factor to fill the container
+    val containerAspect = containerWidth / containerHeight
+    val imageAspect = imageWidth / imageHeight
 
-    // Calculate offset to center the image
-    val scaledImageWidth = imageWidth * scale
-    val scaledImageHeight = imageHeight * scale
-    val offsetX = (containerWidth - scaledImageWidth) / 2f
-    val offsetY = (containerHeight - scaledImageHeight) / 2f
+    val scale = if (containerAspect > imageAspect) {
+        containerWidth / imageWidth
+    } else {
+        containerHeight / imageHeight
+    }
+
+    // Calculate centered position
+    val scaledWidth = imageWidth * scale
+    val scaledHeight = imageHeight * scale
+    val offsetX = (containerWidth - scaledWidth) / 2f
+    val offsetY = (containerHeight - scaledHeight) / 2f
 
     return Triple(scale, offsetX, offsetY)
 }
