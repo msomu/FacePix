@@ -1,10 +1,8 @@
 package com.msomu.facepix.model
 
 import android.graphics.RectF
-
-data class DummyImageResource(
-    val index : Int
-)
+import androidx.room.ForeignKey
+import com.msomu.facepix.database.model.PersonEntity
 
 data class ImageResource(
     val imagePath : String,
@@ -14,6 +12,7 @@ data class ImageResource(
 )
 
 data class Face(
+    val personId : Long? = null,
     val boundingBox : RectF,
     val confidence : Float
 )

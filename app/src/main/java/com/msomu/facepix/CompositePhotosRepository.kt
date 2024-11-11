@@ -31,7 +31,7 @@ class CompositePhotosRepository @Inject constructor(
                         imagePath = entity.imagePath,
                         height = entity.height,
                         width = entity.width,
-                        faces = entity.faces
+                        faces = entity.detectedFaces
                     )
                 }
             }
@@ -77,7 +77,7 @@ class CompositePhotosRepository @Inject constructor(
                                 height = it.height,
                                 width = it.width,
                                 lastModified = lastModified,
-                                faces = faces
+                                detectedFaces = faces
                             )
                             processedImageDao.insertImage(entity)
                             emit(Unit) // Emit to trigger recomposition

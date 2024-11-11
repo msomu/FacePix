@@ -10,5 +10,5 @@ data class ProcessedImageEntity(
     val height: Int,
     val width: Int,
     val lastModified: Long, // To track if image has been updated
-    val faces: List<Face>
+    val detectedFaces: List<Face>
 )

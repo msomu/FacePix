@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "360e592360871dd6d1337fee7a1096b0",
+    "identityHash": "8f6df6e8d5585ab38781575082803f7b",
     "entities": [
       {
         "tableName": "processed_images",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`imagePath` TEXT NOT NULL, `height` INTEGER NOT NULL, `width` INTEGER NOT NULL, `lastModified` INTEGER NOT NULL, `faces` TEXT NOT NULL, PRIMARY KEY(`imagePath`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`imagePath` TEXT NOT NULL, `height` INTEGER NOT NULL, `width` INTEGER NOT NULL, `lastModified` INTEGER NOT NULL, `detectedFaces` TEXT NOT NULL, PRIMARY KEY(`imagePath`))",
         "fields": [
           {
             "fieldPath": "imagePath",
@@ -33,8 +33,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "faces",
-            "columnName": "faces",
+            "fieldPath": "detectedFaces",
+            "columnName": "detectedFaces",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -79,72 +79,12 @@
         },
         "indices": [],
         "foreignKeys": []
-      },
-      {
-        "tableName": "face_tags",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `imagePath` TEXT NOT NULL, `face` TEXT NOT NULL, `personId` INTEGER NOT NULL, FOREIGN KEY(`personId`) REFERENCES `persons`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "imagePath",
-            "columnName": "imagePath",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "face",
-            "columnName": "face",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "personId",
-            "columnName": "personId",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "id"
-          ]
-        },
-        "indices": [
-          {
-            "name": "index_face_tags_personId",
-            "unique": false,
-            "columnNames": [
-              "personId"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_face_tags_personId` ON `${TABLE_NAME}` (`personId`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "persons",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "personId"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          }
-        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '360e592360871dd6d1337fee7a1096b0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8f6df6e8d5585ab38781575082803f7b')"
     ]
   }
 }
