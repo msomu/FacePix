@@ -29,8 +29,15 @@ fun NavGraphBuilder.detailScreen() {
 @Composable
 internal fun DetailPage(
     viewModel: DetailViewModel = hiltViewModel(),
-){
-    val imageResource = viewModel.selectedImagePath.collectAsStateWithLifecycle()
-    Timber.d("DetailPage: $imageResource")
-    DetailPage(imagePath = null, modifier = Modifier)
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val availablePersons by viewModel.availablePersons.collectAsStateWithLifecycle()
+    ImageDetailScreen(
+        uiState = uiState,
+        availablePersons = availablePersons,
+        modifier = Modifier,
+        onNavigateBack = {},
+        addPerson = {},
+        tagFace = {a,b,c -> Timber.d("tagFace $a $b $c")}
+    )
 }

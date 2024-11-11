@@ -19,13 +19,19 @@ package com.msomu.facepix.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.msomu.facepix.database.dao.FaceTagDao
+import com.msomu.facepix.database.dao.PersonDao
 import com.msomu.facepix.database.dao.ProcessedImageDao
+import com.msomu.facepix.database.model.FaceTagEntity
+import com.msomu.facepix.database.model.PersonEntity
 import com.msomu.facepix.database.model.ProcessedImageEntity
 import com.msomu.facepix.database.util.Converters
 
 @Database(
     entities = [
         ProcessedImageEntity::class,
+        PersonEntity::class,
+        FaceTagEntity::class
     ],
     version = 1,
     autoMigrations = [],
@@ -36,4 +42,6 @@ import com.msomu.facepix.database.util.Converters
 )
 internal abstract class AppDatabase : RoomDatabase() {
     abstract fun processedImageDao(): ProcessedImageDao
+    abstract fun personDao(): PersonDao
+    abstract fun faceTagDao(): FaceTagDao
 }
