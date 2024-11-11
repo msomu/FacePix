@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.room)
     alias(libs.plugins.download)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -46,9 +45,6 @@ android {
         compose = true
         buildConfig = true
     }
-    room {
-        schemaDirectory("$projectDir/schemas")
-    }
 }
 
 // Download default models; if you wish to use your own models then
@@ -56,7 +52,7 @@ android {
 apply(from = "download_models.gradle")
 
 dependencies {
-
+    api(projects.core.database)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -68,10 +64,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
-    annotationProcessor(libs.room.compiler)
+
     implementation(libs.timber)
     implementation(libs.mediapipe.tasks.vision)
     implementation(libs.accompanist.permissions)
@@ -79,7 +72,6 @@ dependencies {
     implementation(libs.coil.kt.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.google.gson)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

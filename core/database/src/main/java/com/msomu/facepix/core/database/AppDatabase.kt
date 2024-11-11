@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.msomu.facepix.database
+package com.msomu.facepix.core.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.msomu.facepix.database.dao.PersonDao
-import com.msomu.facepix.database.dao.ProcessedImageDao
-import com.msomu.facepix.database.model.PersonEntity
-import com.msomu.facepix.database.model.ProcessedImageEntity
-import com.msomu.facepix.database.util.FaceTypeConverter
+import com.msomu.facepix.core.database.dao.PersonDao
+import com.msomu.facepix.core.database.dao.ProcessedImageDao
+import com.msomu.facepix.core.database.model.PersonEntity
+import com.msomu.facepix.core.database.model.ProcessedImageEntity
+import com.msomu.facepix.core.database.util.FaceTypeConverter
 
 @Database(
     entities = [

@@ -1,6 +1,4 @@
-package com.msomu.facepix.model
-
-import com.msomu.facepix.core.model.Face
+package com.msomu.facepix.core.model
 
 data class ImageResource(
     val imagePath : String,

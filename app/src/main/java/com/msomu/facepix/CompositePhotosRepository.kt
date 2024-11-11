@@ -4,9 +4,10 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.provider.MediaStore
-import com.msomu.facepix.database.dao.ProcessedImageDao
-import com.msomu.facepix.database.model.ProcessedImageEntity
-import com.msomu.facepix.model.Face
+import com.msomu.facepix.core.database.dao.ProcessedImageDao
+import com.msomu.facepix.core.database.model.ProcessedImageEntity
+import com.msomu.facepix.core.model.BoundingBox
+import com.msomu.facepix.core.model.Face
 import com.msomu.facepix.model.ImageResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -118,7 +119,7 @@ class CompositePhotosRepository @Inject constructor(
                     val boundingBox = detection.boundingBox()
                     face.add(
                         Face(
-                            boundingBox = boundingBox,
+                            boundingBox = BoundingBox(boundingBox.left, boundingBox.top, boundingBox.right, boundingBox.bottom),
                             confidence = detection.categories()[0].score()
                         )
                     )

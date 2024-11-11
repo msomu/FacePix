@@ -1,8 +1,8 @@
-package com.msomu.facepix.database.di
+package com.msomu.facepix.core.database.di
 
-import com.msomu.facepix.database.AppDatabase
-import com.msomu.facepix.database.dao.PersonDao
-import com.msomu.facepix.database.dao.ProcessedImageDao
+import com.msomu.facepix.core.database.AppDatabase
+import com.msomu.facepix.core.database.dao.PersonDao
+import com.msomu.facepix.core.database.dao.ProcessedImageDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

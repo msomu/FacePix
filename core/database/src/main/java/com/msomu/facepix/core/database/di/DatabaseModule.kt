@@ -1,8 +1,8 @@
-package com.msomu.facepix.database.di
+package com.msomu.facepix.core.database.di
 
 import android.content.Context
 import androidx.room.Room
-import com.msomu.facepix.database.AppDatabase
+import com.msomu.facepix.core.database.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

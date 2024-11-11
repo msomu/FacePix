@@ -18,13 +18,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.pointerInput
-import com.msomu.facepix.database.model.PersonEntity
-import com.msomu.facepix.model.Face
-
-data class TaggedFaceInfo(
-    val face: Face,
-    val personEntity: PersonEntity? = null
-)
+import com.msomu.facepix.core.database.model.TaggedFaceInfo
+import com.msomu.facepix.core.model.Face
 
 @Composable
 fun FaceDetectionOverlay(

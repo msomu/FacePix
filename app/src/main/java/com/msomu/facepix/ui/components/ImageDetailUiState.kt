@@ -1,6 +1,8 @@
 package com.msomu.facepix.ui.components
 
-import com.msomu.facepix.database.model.ProcessedImageEntity
+import com.msomu.facepix.core.database.model.ProcessedImageEntity
+import com.msomu.facepix.core.database.model.TaggedFaceInfo
+
 
 sealed interface ImageDetailUiState {
     data object Loading : ImageDetailUiState

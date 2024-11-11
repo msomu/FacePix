@@ -1,4 +1,4 @@
-package com.msomu.facepix.database.model
+package com.msomu.facepix.core.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

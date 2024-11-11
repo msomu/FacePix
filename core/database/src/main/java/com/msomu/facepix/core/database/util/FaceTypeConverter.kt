@@ -1,9 +1,9 @@
-package com.msomu.facepix.database.util
+package com.msomu.facepix.core.database.util
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.msomu.facepix.model.Face
+import com.msomu.facepix.core.model.Face
 
 class FaceTypeConverter {
     private val gson = Gson()

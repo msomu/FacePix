@@ -1,6 +1,6 @@
 package com.msomu.facepix
 
-import com.msomu.facepix.database.dao.ProcessedImageDao
+import com.msomu.facepix.core.database.dao.ProcessedImageDao
 import javax.inject.Inject
 
 class ImageRepositoryImpl @Inject constructor(private val processedImageDao: ProcessedImageDao) :

@@ -1,11 +1,11 @@
-package com.msomu.facepix.database.dao
+package com.msomu.facepix.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.msomu.facepix.database.model.ProcessedImageEntity
+import com.msomu.facepix.core.database.model.ProcessedImageEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

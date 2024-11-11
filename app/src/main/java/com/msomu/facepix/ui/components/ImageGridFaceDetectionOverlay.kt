@@ -9,7 +9,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.Stroke
-import com.msomu.facepix.model.Face
+import com.msomu.facepix.core.model.Face
 
 @Composable
 fun ImageGridFaceDetectionOverlay(

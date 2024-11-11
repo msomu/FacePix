@@ -1,3 +1,4 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 pluginManagement {
     repositories {
         google {
@@ -21,3 +22,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "FacePix"
 include(":app")
+include(":core:database")
+include(":core:ui")
+include(":feature:home")
+include(":feature:detail")
+include(":core:model")

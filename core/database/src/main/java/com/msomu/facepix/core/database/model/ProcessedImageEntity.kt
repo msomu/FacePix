@@ -1,8 +1,8 @@
-package com.msomu.facepix.database.model
+package com.msomu.facepix.core.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.msomu.facepix.model.Face
+import com.msomu.facepix.core.model.Face
 
 @Entity(tableName = "processed_images")
 data class ProcessedImageEntity(

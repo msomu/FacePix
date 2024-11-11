@@ -19,7 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.msomu.facepix.database.model.PersonEntity
+import com.msomu.facepix.core.database.model.PersonEntity
 
 @Composable
 fun PersonSelectionDialog(
