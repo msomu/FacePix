@@ -64,7 +64,7 @@ fun ImageDetailScreen(
                             .weight(1f)
                     ) {
                         AsyncImage(
-                            model = state.image.image,
+                            model = state.image.image.imagePath,
                             contentDescription = null,
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.Fit
