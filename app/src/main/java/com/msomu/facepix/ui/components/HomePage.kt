@@ -14,25 +14,21 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.msomu.facepix.HomeViewModel
 import com.msomu.facepix.ui.HomePageUiState
 import timber.log.Timber
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomePage(
+    homePageUiState: HomePageUiState,
     onImageClicked: (imagePath: String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
         listOf(READ_MEDIA_IMAGES, READ_MEDIA_VISUAL_USER_SELECTED)
@@ -44,14 +40,14 @@ fun HomePage(
     val cameraPermissionStates = rememberMultiplePermissionsState(
         permissions
     )
-    val imageState by viewModel.imageState.collectAsState()
-    LaunchedEffect(imageState) { Timber.tag("msomu").d("HomePage: $imageState") }
+
+    LaunchedEffect(homePageUiState) { Timber.tag("msomu").d("HomePage: $homePageUiState") }
 
     Column(modifier = modifier) {
         if (!cameraPermissionStates.allPermissionsGranted) {
             PermissionRequest(cameraPermissionStates)
         } else {
-            when (imageState) {
+            when (homePageUiState) {
                 is HomePageUiState.Loading -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -62,7 +58,7 @@ fun HomePage(
                 }
 
                 is HomePageUiState.Success -> {
-                    val images = (imageState as HomePageUiState.Success).images
+                    val images = (homePageUiState as HomePageUiState.Success).images
                     ImageGrid(
                         Modifier.fillMaxSize(),
                         images = images,
@@ -75,7 +71,7 @@ fun HomePage(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text((imageState as HomePageUiState.Error).message)
+                        Text((homePageUiState as HomePageUiState.Error).message)
                     }
                 }
             }
