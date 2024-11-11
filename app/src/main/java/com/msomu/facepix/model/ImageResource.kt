@@ -1,8 +1,6 @@
 package com.msomu.facepix.model
 
 import android.graphics.RectF
-import androidx.room.ForeignKey
-import com.msomu.facepix.database.model.PersonEntity
 
 data class ImageResource(
     val imagePath : String,
