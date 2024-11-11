@@ -1,9 +1,9 @@
 package com.msomu.facepix.di
 
-import com.msomu.facepix.CompositePhotosRepository
-import com.msomu.facepix.ImageRepository
-import com.msomu.facepix.ImageRepositoryImpl
-import com.msomu.facepix.PhotosRepository
+import com.msomu.facepix.core.data.CompositePhotosRepository
+import com.msomu.facepix.core.data.ImageRepository
+import com.msomu.facepix.core.data.ImageRepositoryImpl
+import com.msomu.facepix.core.data.PhotosRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

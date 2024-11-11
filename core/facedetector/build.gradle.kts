@@ -1,11 +1,14 @@
+// Import DownloadModels task
+project.ext["ASSET_DIR"] = "${projectDir}/src/main/assets"
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.download)
 }
 
 android {
-    namespace = "com.msomu.facepix.core.ui"
+    namespace = "com.msomu.facepix.core.facedetector"
     compileSdk = 34
 
     defaultConfig {
@@ -31,26 +34,19 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
 }
 
+// Download default models; if you wish to use your own models then
+// place them in the "assets" directory and comment out this line.
+apply(from = "download_models.gradle")
+
+
 dependencies {
-    api(projects.core.model)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.coil.kt)
-    implementation(libs.coil.kt.compose)
-
+    implementation(libs.mediapipe.tasks.vision)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

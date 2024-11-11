@@ -1,13 +1,9 @@
-// Import DownloadModels task
-project.ext["ASSET_DIR"] = "${projectDir}/src/main/assets"
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.download)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -47,12 +43,10 @@ android {
     }
 }
 
-// Download default models; if you wish to use your own models then
-// place them in the "assets" directory and comment out this line.
-apply(from = "download_models.gradle")
-
 dependencies {
     api(projects.core.database)
+    api(projects.feature.home)
+    api(projects.feature.detail)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -66,10 +60,6 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(libs.timber)
-    implementation(libs.mediapipe.tasks.vision)
-    implementation(libs.accompanist.permissions)
-    implementation(libs.coil.kt)
-    implementation(libs.coil.kt.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 
