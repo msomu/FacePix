@@ -2,6 +2,7 @@ package com.msomu.facepix.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,7 +27,11 @@ import timber.log.Timber
 
 
 @Composable
-fun ImageGrid(modifier: Modifier, images: List<ImageResource>) {
+fun ImageGrid(
+    modifier: Modifier,
+    images: List<ImageResource>,
+    onImageClick: (ImageResource) -> Unit
+) {
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(3), // 3 items per row
@@ -40,6 +45,7 @@ fun ImageGrid(modifier: Modifier, images: List<ImageResource>) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1.0F)
+                    .clickable { onImageClick(imageResource) }
             ) {
                 Image(
                     painter = rememberAsyncImagePainter(
