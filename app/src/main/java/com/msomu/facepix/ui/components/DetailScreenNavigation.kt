@@ -11,7 +11,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.msomu.facepix.DetailViewModel
 import kotlinx.serialization.Serializable
-import timber.log.Timber
 
 @Serializable
 data class DetailsRoute(val imagePath: String? = null)

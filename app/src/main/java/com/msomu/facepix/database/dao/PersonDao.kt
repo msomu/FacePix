@@ -13,6 +13,9 @@ interface PersonDao {
     @Query("SELECT * FROM persons ORDER BY name")
     fun getAllPersons(): Flow<List<PersonEntity>>
 
+    @Query("SELECT * FROM persons WHERE id = :id")
+    suspend fun getPerson(id : Long): PersonEntity?
+
     @Insert
     suspend fun insertPerson(person: PersonEntity): Long
 

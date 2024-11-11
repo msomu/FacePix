@@ -10,6 +10,7 @@ import com.msomu.facepix.database.model.PersonEntity
 import com.msomu.facepix.model.Face
 import com.msomu.facepix.ui.components.DetailsRoute
 import com.msomu.facepix.ui.components.ImageDetailUiState
+import com.msomu.facepix.ui.components.TaggedFaceInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -33,7 +34,7 @@ class DetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ImageDetailUiState>(ImageDetailUiState.Loading)
     val uiState: StateFlow<ImageDetailUiState> = _uiState.asStateFlow()
 
-    private var currentFaces : List<Face> = emptyList()
+    private var currentFaces : List<TaggedFaceInfo> = emptyList()
 
     val availablePersons = personDao.getAllPersons()
         .stateIn(
@@ -48,9 +49,10 @@ class DetailViewModel @Inject constructor(
             _uiState.value = if (image == null) {
                 ImageDetailUiState.Error("Image not found")
             } else {
-                currentFaces = image.detectedFaces
+                currentFaces = image.detectedFaces.map { TaggedFaceInfo(it, personEntity = personDao.getPerson(it.personId ?: 0)) }
                 ImageDetailUiState.Success(
                     image = image,
+                    faces = currentFaces
                 )
             }
         }
@@ -70,8 +72,8 @@ class DetailViewModel @Inject constructor(
         // the specific face in the list. You could compare bounding boxes, confidence, etc.
         // For example:
         return currentFaces.indexOfFirst {
-            it.boundingBox == face.boundingBox &&
-                    it.confidence == face.confidence
+            it.face.boundingBox == face.boundingBox &&
+                    it.face.confidence == face.confidence
         }
     }
 
