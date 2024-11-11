@@ -3,7 +3,6 @@ package com.msomu.facepix
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.nfc.Tag
 import android.provider.MediaStore
 import com.msomu.facepix.database.dao.ProcessedImageDao
 import com.msomu.facepix.database.model.ProcessedImageEntity
@@ -12,8 +11,6 @@ import com.msomu.facepix.model.ImageResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.invoke
 import timber.log.Timber
@@ -70,7 +67,7 @@ class CompositePhotosRepository @Inject constructor(
 
         // Process each image
         currentImages.forEach { (path, lastModified) ->
-            val existingImage = processedImageDao.getImage(path)
+            val existingImage = processedImageDao.getImageFromPath(path)
 
             // Process only if image is new or modified
             if (existingImage == null || existingImage.lastModified < lastModified) {

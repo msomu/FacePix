@@ -20,7 +20,10 @@ interface ProcessedImageDao {
     suspend fun deleteImage(path: String)
 
     @Query("SELECT * FROM processed_images WHERE imagePath = :path")
-    suspend fun getImage(path: String): ProcessedImageEntity?
+    suspend fun getImageFromPath(path: String): ProcessedImageEntity?
+
+    @Query("SELECT * FROM processed_images WHERE imagePath = :path")
+    fun getImage(path: String): Flow<ProcessedImageEntity?>
 
     @Update
     suspend fun updateProcessedImage(image: ProcessedImageEntity)

@@ -6,7 +6,7 @@ import javax.inject.Inject
 class ImageRepositoryImpl @Inject constructor(private val processedImageDao: ProcessedImageDao) :
     ImageRepository {
     override suspend fun updateFacePersonId(imagePath: String, faceIndex: Int, personId: Long) {
-        val image = processedImageDao.getImage(imagePath) ?: return
+        val image = processedImageDao.getImageFromPath(imagePath) ?: return
 
         // Create a new list with the updated face
         val updatedFaces = image.detectedFaces.toMutableList()
