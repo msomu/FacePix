@@ -37,7 +37,5 @@ internal fun DetailPage(
         availablePersons = availablePersons,
         modifier = Modifier,
         onNavigateBack = {},
-        addPerson = {},
-        tagFace = {a,b,c -> Timber.d("tagFace $a $b $c")}
     )
 }

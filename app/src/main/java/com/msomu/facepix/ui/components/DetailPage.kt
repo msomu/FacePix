@@ -27,7 +27,6 @@ import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.msomu.facepix.database.model.PersonEntity
-import com.msomu.facepix.model.Face
 import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,12 +35,8 @@ fun ImageDetailScreen(
     uiState: ImageDetailUiState,
     availablePersons: List<PersonEntity>,
     modifier: Modifier = Modifier,
-    tagFace: (RectF, Long, Float) -> Unit,
-    addPerson: (String) -> Unit,
     onNavigateBack: () -> Unit
 ) {
-    var selectedFace by remember { mutableStateOf<Face?>(null) }
-    var showPersonDialog by remember { mutableStateOf(false) }
 
     Scaffold(topBar = {
         TopAppBar(title = { Text("Image Detail") }, navigationIcon = {
