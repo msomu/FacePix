@@ -2,8 +2,8 @@ package com.msomu.facepix.di
 
 import com.msomu.facepix.CompositePhotosRepository
 import com.msomu.facepix.PhotosRepository
-import dagger.Module
 import dagger.Binds
+import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
