@@ -8,12 +8,17 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    photosRepository: PhotosRepository
+    private val photosRepository: CompositePhotosRepository
 ) : ViewModel() {
+
+    init {
+        syncImages()
+    }
 
     val imageState: StateFlow<HomePageUiState> =
         photosRepository.getAllPhotosFromStorage()
@@ -21,9 +26,7 @@ class HomeViewModel @Inject constructor(
                 if (images.isEmpty()) {
                     HomePageUiState.Loading
                 } else {
-                    HomePageUiState.Success(
-                        images = images,
-                    )
+                    HomePageUiState.Success(images = images)
                 }
             }
             .stateIn(
@@ -31,4 +34,10 @@ class HomeViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = HomePageUiState.Loading,
             )
+
+    private fun syncImages() {
+        viewModelScope.launch {
+            photosRepository.syncImagesWithStorage().collect { }
+        }
+    }
 }

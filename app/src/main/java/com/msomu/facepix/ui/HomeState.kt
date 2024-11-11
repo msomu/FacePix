@@ -1,6 +1,5 @@
 package com.msomu.facepix.ui
 
-import com.msomu.facepix.model.DummyImageResource
 import com.msomu.facepix.model.ImageResource
 
 sealed interface HomePageUiState {

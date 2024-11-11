@@ -1,0 +1,58 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "18c87ca8e0d4f3181e2f82222cb5c276",
+    "entities": [
+      {
+        "tableName": "processed_images",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`imagePath` TEXT NOT NULL, `height` INTEGER NOT NULL, `width` INTEGER NOT NULL, `lastModified` INTEGER NOT NULL, `faces` TEXT NOT NULL, PRIMARY KEY(`imagePath`))",
+        "fields": [
+          {
+            "fieldPath": "imagePath",
+            "columnName": "imagePath",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "height",
+            "columnName": "height",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "width",
+            "columnName": "width",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastModified",
+            "columnName": "lastModified",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "faces",
+            "columnName": "faces",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "imagePath"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '18c87ca8e0d4f3181e2f82222cb5c276')"
+    ]
+  }
+}
