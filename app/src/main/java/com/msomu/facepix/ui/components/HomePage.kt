@@ -1,5 +1,9 @@
 package com.msomu.facepix.ui.components
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.READ_MEDIA_IMAGES
+import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.msomu.facepix.HomeViewModel
 import com.msomu.facepix.ui.HomePageUiState
 import timber.log.Timber
@@ -25,10 +30,20 @@ import timber.log.Timber
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomePage(
-    modifier: Modifier,
-    cameraPermissionStates: MultiplePermissionsState,
+    onImageClicked: (imagePath: String) -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        listOf(READ_MEDIA_IMAGES, READ_MEDIA_VISUAL_USER_SELECTED)
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        listOf(READ_MEDIA_IMAGES)
+    } else {
+        listOf(READ_EXTERNAL_STORAGE)
+    }
+    val cameraPermissionStates = rememberMultiplePermissionsState(
+        permissions
+    )
     val imageState by viewModel.imageState.collectAsState()
     LaunchedEffect(imageState) { Timber.tag("msomu").d("HomePage: $imageState") }
 
@@ -50,7 +65,8 @@ fun HomePage(
                     val images = (imageState as HomePageUiState.Success).images
                     ImageGrid(
                         Modifier.fillMaxSize(),
-                        images = images
+                        images = images,
+                        onImageClick = { imageResource -> onImageClicked(imageResource.imagePath) }
                     )
                 }
 

@@ -33,70 +33,70 @@ import com.msomu.facepix.model.Face
 import com.msomu.facepix.model.ImageResource
 
 @Composable
-fun FullScreenImageViewer(
-    imageResource: ImageResource,
-    onDismiss: () -> Unit,
-    onTagFace: (Face, String) -> Unit,
+fun DetailPage(
+    imagePath : String?,
+//    onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedFace by remember { mutableStateOf<Face?>(null) }
     var showTagDialog by remember { mutableStateOf(false) }
+//    val imageResource : ImageResource // TODO
 
-    Box(modifier = modifier.fillMaxSize()) {
-        // Full screen image with faces overlay
-        Box(modifier = Modifier.fillMaxSize()) {
-            Image(
-                painter = rememberAsyncImagePainter(model = imageResource.imagePath),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Fit
-            )
-
-            // Clickable face boxes
-            imageResource.faces.forEach { face ->
-                FaceBox(
-                    face = face,
-                    imageWidth = imageResource.width,
-                    imageHeight = imageResource.height,
-                    onClick = {
-                        selectedFace = face
-                        showTagDialog = true
-                    }
-                )
-            }
-        }
+//    Box(modifier = modifier.fillMaxSize()) {
+//        // Full screen image with faces overlay
+//        Box(modifier = Modifier.fillMaxSize()) {
+//            Image(
+//                painter = rememberAsyncImagePainter(model = imageResource.imagePath),
+//                contentDescription = null,
+//                modifier = Modifier.fillMaxSize(),
+//                contentScale = ContentScale.Fit
+//            )
+//
+//            // Clickable face boxes
+//            imageResource.faces.forEach { face ->
+//                FaceBox(
+//                    face = face,
+//                    imageWidth = imageResource.width,
+//                    imageHeight = imageResource.height,
+//                    onClick = {
+//                        selectedFace = face
+//                        showTagDialog = true
+//                    }
+//                )
+//            }
+//        }
 
         // Close button
-        IconButton(
-            onClick = onDismiss,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Close,
-                contentDescription = "Close",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
-        }
-    }
-
-    // Tag dialog
-    if (showTagDialog && selectedFace != null) {
-        TagDialog(
-            onDismiss = {
-                showTagDialog = false
-                selectedFace = null
-            },
-            onConfirm = { tag ->
-                selectedFace?.let { face ->
-                    onTagFace(face, tag)
-                }
-                showTagDialog = false
-                selectedFace = null
-            }
-        )
-    }
+//        IconButton(
+////            onClick = onDismiss,
+//            modifier = Modifier
+//                .align(Alignment.TopEnd)
+//                .padding(16.dp)
+//        ) {
+//            Icon(
+//                imageVector = Icons.Default.Close,
+//                contentDescription = "Close",
+//                tint = MaterialTheme.colorScheme.onSurface
+//            )
+//        }
+//    }
+//
+//    // Tag dialog
+//    if (showTagDialog && selectedFace != null) {
+//        TagDialog(
+//            onDismiss = {
+//                showTagDialog = false
+//                selectedFace = null
+//            },
+//            onConfirm = { tag ->
+//                selectedFace?.let { face ->
+////                    onTagFace(face, tag)
+//                }
+//                showTagDialog = false
+//                selectedFace = null
+//            }
+//        )
+//    }
 }
 
 @Composable
